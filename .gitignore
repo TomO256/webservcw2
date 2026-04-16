@@ -1,2 +1,4 @@
 venv/
-index.json
+data/index.json
+src/__pycache__
+tests/__pycache__
