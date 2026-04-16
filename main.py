@@ -61,7 +61,7 @@ def find(string):
     return
 
 
-def run():
+def run(loaded=False):
     cmd = ""
     cmd = input("Enter command\n")
     ops = cmd.split(" ",1)
@@ -70,10 +70,17 @@ def run():
         build()
     elif opcode == "load":
         load()
+        loaded = True
     elif opcode == "print":
-        display(ops[1])
+        if not loaded:
+            print("Database not loaded, please load before attempting to query")
+        else:
+            display(ops[1])
     elif opcode == "find":
-        find(ops[1])
+        if not loaded:
+            print("Database not loaded, please load before attempting to query")            
+        else:
+            find(ops[1])
     elif opcode == "exit":
         print("Exiting Gracefully")
         return
@@ -84,7 +91,7 @@ load
 print <word>
 find <word>
 exit""")
-    run()
+    run(loaded)
     
 
 
