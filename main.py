@@ -46,7 +46,13 @@ def build():
                 
 
 def load():
-    return
+    global index
+    try:
+        with open("index.json","r") as f:
+            index = json.load(f)
+        print("Load Successful")
+    except FileNotFoundError:
+        print("Unable to find index.json. Please ensure file is named correctly, or run 'build' to create it")
 
 def display(word):
     return
