@@ -52,10 +52,15 @@ def crawlQuotes(content,url):
         
         for quote in quotes:
             parent = quote.find_parent("div", class_="quote")
-            author = parent.find("a")
-            if author:
-                link = author["href"]
-                authors.add(url + link)
+
+            links = parent.find_all("a", href=True)
+
+            for link in links:
+                href = link.get("href")
+
+                if href and href.startswith("/author/"):
+                    authors.add(url + href)
+                    break
         try:
             next = soup.find("li",class_="next").find("a")["href"]
         except AttributeError:
