@@ -5,7 +5,7 @@ import pytest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.indexer import createIndex, save, load
+from src.indexer import createIndex, save, load, rankedIndex
 
 def test_create():
     content = [("url1", "Hello world"),("url2", "Hello again")]
@@ -47,3 +47,38 @@ def test_missing(tmp_path, capsys):
     captured = capsys.readouterr()
     assert result is False
     assert "Unable to find index.json" in captured.out
+    
+
+def test_ranked():
+    content = [
+        ("page1", "hello world"),
+        ("page2", "hello hello")
+    ]
+
+    index = rankedIndex(content)
+    assert isinstance(index, dict)
+    assert "hello" in index
+    assert "world" in index
+    assert "page1" in index["hello"]
+    assert "page2" in index["hello"]
+
+
+def test_correct_ranking():
+    content = [
+        ("page1", "hello world"),
+        ("page2", "hello hello hello")
+    ]
+
+    index = rankedIndex(content)
+    assert index["hello"]["page2"] > index["hello"]["page1"]
+
+
+def test_tfidf_mech():
+    content = [
+        ("page1", "common rare"),
+        ("page2", "common"),
+        ("page3", "common")
+    ]
+
+    index = rankedIndex(content)
+    assert index["rare"]["page1"] > index["common"]["page1"]

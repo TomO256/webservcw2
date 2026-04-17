@@ -20,7 +20,7 @@ def rankedIndex(content):
                 seen.add(word)
     for word, doc in freq.items():
         index[word] = {}
-        idf = math.log(total_docs/ (1+docs[word]))
+        idf = math.log((1 + total_docs) / (1 + docs[word])) + 1
         for url, tf in doc.items():
             tf_weight = 1 + math.log(tf)
             index[word][url] = tf_weight * idf
