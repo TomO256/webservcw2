@@ -1,4 +1,30 @@
 import json
+import collections
+import math
+
+def rankedIndex(content):
+    index = {}
+    docs = collections.defaultdict(int)
+    freq = collections.defaultdict(lambda:collections.defaultdict(int))
+    total_docs = len(content)
+    for url, text in content:
+        words = text.lower().split()
+        seen = set()
+        for word in words:
+            word = ''.join(filter(str.isalnum,word))
+            if not word:
+                continue
+            freq[word][url] +=1
+            if word not in seen:
+                docs[word] +=1
+                seen.add(word)
+    for word, doc in freq.items():
+        index[word] = {}
+        idf = math.log(total_docs/ (1+docs[word]))
+        for url, tf in doc.items():
+            tf_weight = 1 + math.log(tf)
+            index[word][url] = tf_weight * idf
+    return index
 
 def createIndex(content):
     index = {}

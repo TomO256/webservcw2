@@ -1,6 +1,6 @@
 from crawler import crawl
-from indexer import load, save, createIndex
-from search import find, display
+from indexer import load, save, createIndex, rankedIndex
+from search import find, display, find_ranked
 
 def run(index=False):
     cmd = ""
@@ -9,7 +9,8 @@ def run(index=False):
     opcode = ops[0]
     if opcode =="build":
         pages = crawl()
-        index = createIndex(pages)
+        # index = createIndex(pages)
+        index = rankedIndex(pages)
         save(index)
     elif opcode == "load":
         index = load()
@@ -17,12 +18,20 @@ def run(index=False):
         if not index:
             print("Database not loaded, please load before attempting to query")
         else:
-            display(ops[1],index)
+            if len(ops) !=2:
+                print("Usage: print <word>")
+            else:
+                display(ops[1],index)
+            
     elif opcode == "find":
         if not index:
             print("Database not loaded, please load before attempting to query")            
         else:
-            find(ops[1],index)
+            try:
+                # find(ops[1],index)
+                find_ranked(ops[1],index)
+            except IndexError:
+                print("Usage: find <word> [additional words]")
     elif opcode == "exit":
         print("Exiting Gracefully")
         return

@@ -23,3 +23,28 @@ def find(string,index):
         for i in pages:
             print(i)
     return
+
+def find_ranked(string, index):
+    words = string.lower().split()
+    scores = {}
+    pages = []
+
+    for word in words:
+        if word not in index:
+            print("Unable to find entry for: " + str(word))
+            return
+        pages.append(set(index[word].keys()))
+    pages = set.intersection(*pages)
+    if not pages:
+        print("No pages located")
+        return []
+    for word in words:
+        for url, score in index[word].items():
+            if url in pages:
+                scores[url] = scores.get(url, 0) + score
+    ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    print("Ranked Results:")
+    for url, score in ranked:
+        print(url + " (score: " + str(round(score,3)) + ")")
+
+    return ranked
