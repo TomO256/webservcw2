@@ -50,11 +50,7 @@ def test_missing(tmp_path, capsys):
     
 
 def test_ranked():
-    content = [
-        ("page1", "hello world"),
-        ("page2", "hello hello")
-    ]
-
+    content = [("page1", "hello world"),("page2", "hello hello")]
     index = rankedIndex(content)
     assert isinstance(index, dict)
     assert "hello" in index
@@ -64,21 +60,12 @@ def test_ranked():
 
 
 def test_correct_ranking():
-    content = [
-        ("page1", "hello world"),
-        ("page2", "hello hello hello")
-    ]
-
+    content = [("page1", "hello world"),("page2", "hello hello hello")]
     index = rankedIndex(content)
     assert index["hello"]["page2"] > index["hello"]["page1"]
 
 
 def test_tfidf_mech():
-    content = [
-        ("page1", "common rare"),
-        ("page2", "common"),
-        ("page3", "common")
-    ]
-
+    content = [("page1", "common rare"),("page2", "common"),("page3", "common")]
     index = rankedIndex(content)
     assert index["rare"]["page1"] > index["common"]["page1"]
