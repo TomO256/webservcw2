@@ -4,7 +4,7 @@ from search import find, display
 
 def run(index=False):
     cmd = ""
-    cmd = input("Enter command\n")
+    cmd = input("Enter command\n").lower()
     ops = cmd.split(" ",1)
     opcode = ops[0]
     if opcode =="build":
