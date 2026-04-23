@@ -15,7 +15,7 @@ def test_normal(mock_get):
         Mock(status_code=200, text=get_page_one()),
         Mock(status_code=200, text=get_custom_quote_page("Final Quote","FinalAuthor"))
     ]
-    content, authors = crawlQuotes([], "https://quotes.toscrape.com")
+    content, authors = crawlQuotes([], "https://quotes.toscrape.com",True)
     assert isinstance(content, list)
     assert isinstance(authors, set)
     assert any("The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking" in text for _, text in content)
@@ -26,7 +26,7 @@ def test_normal(mock_get):
 @patch("src.crawler.requests.get")
 def test_crawl_quotes_stops_at_last_page(mock_get):
     mock_get.return_value = Mock(status_code=200, text=get_custom_quote_page("Final Page","Final Author"))
-    content, authors = crawlQuotes([], "https://quotes.toscrape.com")
+    content, authors = crawlQuotes([], "https://quotes.toscrape.com",True)
     assert len(content) == 1
     assert len(authors) >= 1
 
@@ -34,7 +34,7 @@ def test_crawl_quotes_stops_at_last_page(mock_get):
 def test_crawl_authors(mock_get):
     mock_get.return_value = Mock(status_code=200, text=get_author_page("Author","Author's Bio"))
     authors = {"https://quotes.toscrape.com/author/Author1"}
-    content = crawlAuthors([], authors)
+    content = crawlAuthors([], authors,True)
     assert len(content) == 1
     url, text = content[0]
     assert "Author" in text
@@ -47,7 +47,7 @@ def test_full_crawl(mock_get):
             return Mock(status_code=200, text=get_custom_quote_page("Second page quote","Second author"))
         return Mock(status_code=200, text=get_page_one())
     mock_get.side_effect = fake_get
-    content = crawl()
+    content = crawl(True)
     assert isinstance(content, list)
     assert len(content) >= 2
     texts = [t for _, t in content]
