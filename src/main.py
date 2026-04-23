@@ -21,7 +21,7 @@ def run(index=False):
 
     if opcode == "build":
         # Crawl the website and build a combined (positional + ranked) index
-        pages = crawl(True)
+        pages = crawl()
         index = combinedIndex(pages)
         save(index)
 
