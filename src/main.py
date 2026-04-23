@@ -1,5 +1,5 @@
 from crawler import crawl
-from indexer import load, save, createIndex, rankedIndex
+from indexer import load, save, createIndex, rankedIndex,combinedIndex
 from search import find, display, find_ranked
 
 def run(index=False):
@@ -8,9 +8,9 @@ def run(index=False):
     ops = cmd.split(" ",1)
     opcode = ops[0]
     if opcode =="build":
-        pages = crawl()
-        # index = createIndex(pages)
-        index = rankedIndex(pages)
+        pages = crawl(True)
+        #index = createIndex(pages)
+        index = combinedIndex(pages)
         save(index)
     elif opcode == "load":
         index = load()

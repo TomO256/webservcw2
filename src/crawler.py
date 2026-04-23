@@ -3,16 +3,16 @@ from bs4 import BeautifulSoup
 import time
 
 
-def crawl():
+def crawl(test=False):
     url = "https://quotes.toscrape.com"
     content = []
 
-    content, authors = crawlQuotes(content,url)
-    content = crawlAuthors(content,authors)
+    content, authors = crawlQuotes(content,url,test)
+    content = crawlAuthors(content,authors,test)
     return content
     
     
-def crawlAuthors(content,authors):
+def crawlAuthors(content,authors,test=False):
     for a in authors:
         print("Indexing: "+a)
         response = requests.get(a)
@@ -24,10 +24,11 @@ def crawlAuthors(content,authors):
         if bio and name:
             final = name.text + " " + bio.text
             content.append((a, final))
-        time.sleep(0)
+        if not test:
+            time.sleep(6)
     return content
 
-def crawlQuotes(content,url):
+def crawlQuotes(content,url,test=False):
     authors = set()
     urlToCrawl = url
     while 1:
@@ -39,6 +40,7 @@ def crawlQuotes(content,url):
         quotes = soup.find_all("span",class_="text")
         if not quotes:
             break
+        quoteNum = 0
         for quote in quotes:
             parent = quote.find_parent("div", class_="quote")
             text = quote.text
@@ -48,7 +50,9 @@ def crawlQuotes(content,url):
             for tag in tag_elements:
                 tags.append(tag.text)
             final = text + " " + author + " " + " ".join(tags)
-            content.append((urlToCrawl, final))
+            quoteNum +=1
+            id = urlToCrawl + " quote:"  + str(quoteNum)
+            content.append((id, final))
         
         for quote in quotes:
             parent = quote.find_parent("div", class_="quote")
@@ -70,6 +74,6 @@ def crawlQuotes(content,url):
         else:
             print("Crawl Finished")
             break
-        
-        time.sleep(0)
+        if not test:
+            time.sleep(6)
     return content, authors

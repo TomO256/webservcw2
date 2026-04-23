@@ -33,7 +33,7 @@ pip install -r requirements.txt
 Run the program:
 
 ```
-python main.py
+python src/main.py
 ```
 
 You will be prompted to enter commands.
@@ -47,7 +47,7 @@ You will be prompted to enter commands.
 build
 ```
 
--  Crawls the target website
+- Crawls the target website
 - Extracts text content
 - Builds a TF-IDF index
 - Saves the index to `data/index.json`
@@ -59,8 +59,8 @@ build
 load
 ```
 
-* Loads a previously saved index from disk
-* Must be executed before running queries (unless `build` was just run)
+- Loads a previously saved index from disk
+- Must be executed before running queries (unless `build` was just run)
 
 
 ### Print Word Index
@@ -104,13 +104,13 @@ find good friends
 exit
 ```
 
-* Terminates the program
+- Terminates the program
 
 ---
 
 ## Running Tests
 
-Execute the full test suite:
+Execute the full test suite, this must be run from the root directory `webservcw2/`:
 
 ```
 pytest
