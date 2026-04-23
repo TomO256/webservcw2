@@ -101,6 +101,6 @@ def find_ranked(string, index):
 
     print("Ranked Results:")
     for url, score in ranked:
-        print(url + "\t score: " + str(round(score, 3)))
+        print(url + "\t | \t score: " + str(round(score, 3)))
 
     return ranked
